@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Gihpy Pop</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="assets/javascript/file.js"></script>
+
+</head>
+
+<body>
+
+<!-- BUTTONS - will populate through JS -->
+<div id="buttons"></div>
+
+<!-- SEARCH BAR AND SUBMIT BUTTON -->
+<form id="search">
+    <label for="search-input"> Search </label> 
+    <input type="text" id="search-input">
+    <br>
+    <input type="submit" value="submit">
+</form>
+
+<!-- GIPHY RESULTS-->
+<div id="results"></div>
+
+
+  <script type="text/javascript">
+    $(".gif").on("click", function() {
+      // The attr jQuery method allows us to get or set the value of any attribute on our HTML element
+      var state = $(this).attr("data-state");
+      // If the clicked image's state is still, update its src attribute to what its data-animate value is.
+      // Then, set the image's data-state to animate
+      // Else set src to the data-still value
+      if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-state", "animate");
+      } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still");
+      }
+    });
+  </script>
+</body>
+
+</html>
