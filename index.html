@@ -7,7 +7,7 @@
   <meta charset="utf-8">
 
   <!-- SITE TITLE-->
-  <title>Gihpy Pop</title>
+  <title>Giphy Maker</title>
 
   <!-- JQUERY LINK --------------------------------------------------------------------------->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -26,17 +26,32 @@
 
 <body>
 
+  <h1>90s Sitcom GIFs</h1>
+  <h2>for when words aren't enough...</h2>
+
   <div id="container">
 
     <!-- BUTTONS - will populate through JS -->
-    <div id="buttons"></div>
+    <div id="buttons">
+      <button data-show="Clarissa Explains it All"> Clarissa Explains it All </button>
+      <button data-show="Fresh Prince"> Fresh Prince </button>
+      <button data-show="Sabrina the Teenage Witch"> Sabrina the Teenage Witch </button>
+      <button data-show="Frasier"> Frasier </button>
+      <button data-show="Seinfeld"> Seinfeld </button>
+      <button data-show="Home Improvement"> Home Improvement </button>
+      <button data-show="Sister Sister"> Sister Sister </button>
+      <button data-show="Friends"> Friends </button>
+      <button data-show="All That"> All That </button>
+
+
+    </div>
 
     <!-- SEARCH BAR AND SUBMIT BUTTON -->
     <form id="search">
         <label for="search-input"> Search </label> 
         <input type="text" id="search-input">
         <br>
-        <input type="submit" value="submit">
+        <input id="user-input" type="submit" value="submit">
     </form>
 
     <!-- GIPHY RESULTS-->

@@ -1,62 +1,101 @@
-$(function(){ 
-makeButtons(cuteanimals, 'search', '#buttons');
+$(document).ready(function(){
 
-})
+    // // GIPHY BUTTONS VARIABLES ---------------------------------------------------------
+    // var shows = [
+    //     'Fresh Prince',
+    //     'Clarissa Explains it All',
+    //     'Frasier',
+    //     'Seinfeld',
+    //     'Sabrina the Teenage Witch'
+    //     ];
 
-// GIHPY BUTTONS VARIABLES
-var cuteanimals = ['duckling', 'bunny', 'kitten', 'puppy'];
+    // ======================================================================================== 
 
-function makeButtons(cuteanimals, classToAdd, areaToAddTo) {
-    $(areaToAddTo).empty();
-    for( var i = 0; i < cuteanimals.length; i++) {
+    // FUNCTION TO MAKE BUTTONS ---------------------------------------------------------
+
+
+    // APPEND BUTTON UPON USER INPUT & SUBMIT 
+    // call the MAKE BUTTONS function
+
+    $("#user-input").on("click", function(makeButton){
+        //event.preventDefault();
+        
         var a = $("<button>");
-        a.addClass(classToAdd);
-        a.attr('data-type', cuteanimals[i])
-        a.text(cuteanimals[i]);
-        $(areaToAddTo).append(a);
+        $("#buttons").append(a);
+        
+        var newShow = $("user-input").eq(0).val();
 
-    }
-}
+    });
 
-$(document).on('click', '.search', function(){
-    var type = $(this).data('type');
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+type+"&api_key=0UadvzG7wkMMzEvk0LESLAJEnSXfADwf&limit=10";
-    $.ajax({
-        url: queryURL,
-        method: "GET"})
-        .done(function(response) {
-            for( var i = 0; i <response.data.length; i++){
-                var searchDiv = $('<div class="search-item">');
+    // ON CLICK EVENT FOR BUTTON PRESS -------------------------------------------------
+    $("button").on("click", function(){
+
+        // empty the page of any previous results 
+        $("#results").empty();
+
+        // retrieve the show title from button click and assign it to 'show'
+        var show = $(this).attr("data-show");
+        
+        // GIHPY API URL with 'show' added 
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + 
+        show + "&api_key=0UadvzG7wkMMzEvk0LESLAJEnSXfADwf&limit=10";
+
+        // call to GIHPY API
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function(response){
+            console.log(response);
+            // retreive the response from the GIPHY API and assign it to 'results'
+            var results = response.data;
+
+            // for every single result...
+            for (var i = 0; i < results.length; i++){
+
+                // ... create a div
+                var createDiv = $("<div>");
+
+                // ... create an image div 
+                var createImg = $("<img>");
+
+                // take the image info from results and...
                 var animated = response.data[i].images.fixed_height.url;
                 var still = response.data[i].images.fixed_height_still.url;
-                var image = $('<img>');
-                image.attr('src', still);
-                image.attr('data-still', still);
-                image.attr('data-animated', animated);
-                image.attr('data-state', 'still');
-                image.addClass('searchImage');
-                searchDiv.append(image);
-                $('#results').append(searchDiv);
+
+                createImg.attr('src', still);
+                createImg.attr('data-still', still);
+                createImg.attr('data-animated', animated);
+                createImg.attr('data-state', 'still');
+                createImg.addClass('searchImage');
+                
+                // ...append the GIF image to the new div 
+                createDiv.append(createImg);
+
+                // prepend the new div to the results div 
+                $("#results").prepend(createDiv);
+            
+            } // end of for loop
+
+        })
+
+    }) // end ON CLICK event
+
+    // ON CLICK FOR IMAGE - ANIMATE OR STILL -----------------------
+    $(document).on("click", ".searchImage", function() { 
+
+        var state = $(this).attr("data-state");
+                
+            if (state == "still") {
+                $(this).attr("src", $(this).data('animated'));
+                $(this).attr("data-state", "animated");
+            } else {
+                $(this).attr("src", $(this).data("still"));
+                $(this).attr("data-state", "still");
             }
-      });
-})
 
-$('#addSearch').on('click', function(){
-    var newSearch = $('input').eq(0).val();
-    cuteanimals.push(newSearch);
-    makeButtons(cuteanimals, 'search', '#buttons');
-    return false;
-})
+        }); // end of ANIMATE or STILL ON CLICK FUNCTION
+    //-------------------------------------------------------------
 
-$(document).on("click", ".searchImage", function() { 
 
-    var state = $(this).attr("data-state");
-
-    if (state == "still") {
-      $(this).attr("src", $(this).data('animated'));
-      $(this).attr("data-state", "animated");
-    } else {
-      $(this).attr("src", $(this).data("still"));
-      $(this).attr("data-state", "still");
-    }
-  });
+    
+}); // end document ready function
